@@ -27,7 +27,6 @@ from r2.lib.validator import VRatelimit
 from r2.lib import amqp
 from r2.lib import emailer
 from r2.lib import hooks
-from r2.lib import newsletter
 from r2.lib.base import abort
 from r2.lib.errors import errors, reddit_http_error
 
@@ -86,7 +85,7 @@ def handle_login(
 
 def handle_register(
     controller, form, responder, name, email,
-    password, rem=None, newsletter_subscribe=False,
+    password, rem=None,
     sponsor=False, signature=None, **kwargs
 ):
 
@@ -97,7 +96,6 @@ def handle_register(
             user_name=request.urlvars.get('url_user'),
             email=request.POST.get('email'),
             remember_me=rem,
-            newsletter=newsletter_subscribe,
             signature=signature,
             request=request,
             context=c)
@@ -138,11 +136,6 @@ def handle_register(
             responder.has_errors('captcha', errors.BAD_CAPTCHA)):
         _event(error='BAD_CAPTCHA')
 
-    elif newsletter_subscribe and not email:
-        c.errors.add(errors.NEWSLETTER_NO_EMAIL, field="email")
-        form.has_errors("email", errors.NEWSLETTER_NO_EMAIL)
-        _event(error='NEWSLETTER_NO_EMAIL')
-
     elif sponsor and not email:
         c.errors.add(errors.SPONSOR_NO_EMAIL, field="email")
         form.has_errors("email", errors.SPONSOR_NO_EMAIL)
@@ -175,12 +168,6 @@ def handle_register(
         if any(reject):
             _event(error='ACCOUNT_SPOTCHECK')
             return
-
-        if newsletter_subscribe and email:
-            try:
-                newsletter.add_subscriber(email, source="register")
-            except newsletter.NewsletterError as e:
-                g.log.warning("Failed to subscribe: %r" % e)
 
         controller._login(responder, user, rem)
         _event(error=None)

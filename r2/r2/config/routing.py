@@ -175,8 +175,6 @@ def make_map(config):
     mc('/explore', controller='front', action='explore')
     mc('/api/recommend/feedback', controller='api', action='rec_feedback')
 
-    mc("/newsletter", controller="newsletter", action="newsletter")
-
     mc("/gtm/jail", controller="googletagmanager", action="jail")
     mc("/gtm", controller="googletagmanager", action="gtm")
 

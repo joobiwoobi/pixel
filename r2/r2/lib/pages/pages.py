@@ -258,8 +258,7 @@ class Reddit(Templated):
                  robots=None, show_sidebar=True, show_chooser=False,
                  header=True, srbar=True, page_classes=None, short_title=None,
                  show_wiki_actions=False, extra_js_config=None,
-                 show_locationbar=False, auction_announcement=False,
-                 show_newsletterbar=False, canonical_link=None,
+                 show_locationbar=False, canonical_link=None,
                  **context):
         Templated.__init__(self, **context)
         self.title = title
@@ -277,16 +276,12 @@ class Reddit(Templated):
         self.footer = RedditFooter()
         self.debug_footer = DebugFooter()
         self.supplied_page_classes = page_classes or []
-        self.show_newsletterbar = show_newsletterbar
-
-        self.auction_announcement = auction_announcement
 
         #put the sort menus at the top
         self.nav_menu = MenuArea(menus = nav_menus) if nav_menus else None
 
         #add the infobar
         self.welcomebar = None
-        self.newsletterbar = None
         self.locationbar = None
         self.infobar = None
         self.mobilewebredirectbar = None
@@ -350,8 +345,6 @@ class Reddit(Templated):
             if not c.user_is_loggedin:
                 if getattr(self, "show_welcomebar", True):
                     self.welcomebar = WelcomeBar()
-                if self.show_newsletterbar:
-                    self.newsletterbar = NewsletterBar()
 
             if (c.render_style == "compact" and
                     getattr(self, "show_mobilewebredirectbar", True)):
@@ -990,12 +983,10 @@ class Reddit(Templated):
 
     def content(self):
         """returns a Wrapped (or renderable) item for the main content div."""
-        if self.newsletterbar:
-            self.welcomebar = None
+        self.welcomebar = None
 
         return self.content_stack((
             self.welcomebar,
-            self.newsletterbar,
             self.infobar,
             self.locationbar,
             self.mobilewebredirectbar,
@@ -2609,9 +2600,6 @@ class WelcomeBar(InfoBar):
             message = (_("reddit is a platform for internet communities"),
                        _("where your votes shape what the world is talking about."))
         InfoBar.__init__(self, message=message)
-
-class NewsletterBar(InfoBar):
-    pass
 
 class ClientInfoBar(InfoBar):
     """Draws the message the top of a login page before OAuth2 authorization"""
@@ -4394,9 +4382,7 @@ class PromotePage(Reddit):
             nav_menus = [menu]
 
         kw['show_sidebar'] = False
-        auction_announcement = not feature.is_enabled('ads_auction')
-        Reddit.__init__(self, nav_menus=nav_menus,
-            auction_announcement=auction_announcement, *a, **kw)
+        Reddit.__init__(self, nav_menus=nav_menus, *a, **kw)
 
 
 class PromoteLinkBase(Templated):
@@ -5644,14 +5630,6 @@ class GoogleTagManagerJail(Templated):
 
 class GoogleTagManager(Templated):
     pass
-
-
-class Newsletter(BoringPage):
-    extra_page_classes = ['newsletter']
-
-    def __init__(self, pagename=None, content=None, **kw):
-        BoringPage.__init__(self, pagename=pagename, show_sidebar=False,
-                            content=content, **kw)
 
 
 class SubscribeButton(Templated):

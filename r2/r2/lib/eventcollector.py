@@ -708,7 +708,7 @@ class EventQueue(object):
 
     def login_event(self, action_name, error_msg,
                     user_name=None, email=None,
-                    remember_me=None, newsletter=None, email_verified=None,
+                    remember_me=None, email_verified=None,
                     signature=None, request=None, context=None):
         """Create a 'login' event for event-collector.
 
@@ -739,7 +739,6 @@ class EventQueue(object):
         event.add('user_name', user_name)
         event.add('email', email)
         event.add('remember_me', remember_me)
-        event.add('newsletter', newsletter)
         event.add('email_verified', email_verified)
         if signature:
             event.add("signed", True)

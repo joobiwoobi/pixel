@@ -106,7 +106,7 @@ from r2.lib.db import queries
 from r2.lib import media
 from r2.lib.db import tdb_cassandra
 from r2.lib import promote
-from r2.lib import tracking, emailer, newsletter
+from r2.lib import tracking, emailer
 from r2.lib.subreddit_search import search_reddits
 from r2.lib.filters import safemarkdown
 from r2.lib.media import str_to_image
@@ -279,19 +279,11 @@ class ApiController(RedditController):
 
     @csrf_exempt
     @json_validate(email=ValidEmail("email"),
-                   newsletter_subscribe=VBoolean("newsletter_subscribe", default=False),
                    sponsor=VBoolean("sponsor", default=False))
-    def POST_check_email(self, responder, email, newsletter_subscribe, sponsor):
+    def POST_check_email(self, responder, email, sponsor):
         """
         Check whether an email is valid. Allows blank emails.
-
-        Additionally checks if a newsletter is requested, and will be strict
-        on blank emails if so.
         """
-        if newsletter_subscribe and not email:
-            c.errors.add(errors.NEWSLETTER_NO_EMAIL, field="email")
-            responder.has_errors("email", errors.NEWSLETTER_NO_EMAIL)
-            return
 
         if sponsor and not email:
             c.errors.add(errors.SPONSOR_NO_EMAIL, field="email")
@@ -301,29 +293,6 @@ class ApiController(RedditController):
         if not (responder.has_errors("email", errors.BAD_EMAIL)):
             # Pylons does not handle 204s correctly.
             return {}
-
-    @cross_domain(allow_credentials=True)
-    @json_validate(
-        VModhashIfLoggedIn(),
-        VRatelimit(rate_ip=True, prefix="rate_newsletter_"),
-        email=ValidEmail("email"),
-        source=VOneOf('source', ['newsletterbar', 'standalone'])
-    )
-    def POST_newsletter(self, responder, email, source):
-        """Add an email to our newsletter."""
-
-        VRatelimit.ratelimit(rate_ip=True,
-                             prefix="rate_newsletter_")
-
-        try:
-            newsletter.add_subscriber(email, source=source)
-        except newsletter.EmailUnacceptableError as e:
-            c.errors.add(errors.NEWSLETTER_EMAIL_UNACCEPTABLE, field="email")
-            responder.has_errors("email", errors.NEWSLETTER_EMAIL_UNACCEPTABLE)
-            return
-        except newsletter.NewsletterError as e:
-            g.log.warning("Failed to subscribe: %r" % e)
-            abort(500)
 
     @allow_oauth2_access
     @json_validate()
@@ -649,7 +618,6 @@ class ApiController(RedditController):
         email=ValidEmail("email"),
         password=VPasswordChange(['passwd', 'passwd2']),
         rem=VBoolean('rem'),
-        newsletter_subscribe=VBoolean('newsletter_subscribe', default=False),
         sponsor=VBoolean('sponsor', default=False),
     )
     def POST_register(self, form, responder, name, email, password, **kwargs):
