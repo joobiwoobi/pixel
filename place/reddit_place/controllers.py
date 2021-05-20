@@ -31,7 +31,7 @@ from r2.lib.validator import (
     VModhash,
     VUser,
 )
-from r2.models import Subreddit
+from r2.models import Frontpage
 from r2.controllers.oauth2 import (
     allow_oauth2_access,
 )
@@ -58,7 +58,7 @@ ACCOUNT_CREATION_CUTOFF = datetime(2017, 3, 31, 0, 0, tzinfo=g.tz)
 PIXEL_COOLDOWN_SECONDS = 300
 PIXEL_COOLDOWN = timedelta(seconds=PIXEL_COOLDOWN_SECONDS)
 ADMIN_RECT_DRAW_MAX_SIZE = 20
-PLACE_SUBREDDIT = Subreddit._by_name("place", stale=True)
+PLACE_SUBREDDIT = Frontpage
 
 
 @add_controller
@@ -152,7 +152,7 @@ def get_activity_count():
         raise ActivityError
 
     count = 0
-    for context_name in Subreddit.activity_contexts:
+    for context_name in Frontpage.activity_contexts:
         context_activity = getattr(activity, context_name, None)
         if context_activity:
             count += context_activity.count

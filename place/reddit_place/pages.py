@@ -11,7 +11,6 @@ class PlacePage(Reddit):
         super(PlacePage, self).__init__(
             title=title,
             content=content,
-            show_newsletterbar=False,
             include_admin_features=c.user_is_admin,
             **kwargs
         )
