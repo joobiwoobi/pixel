@@ -49,7 +49,6 @@ def load_controllers():
     from listingcontroller import MessageController
     from listingcontroller import RedditsController
     from listingcontroller import ByIDController
-    from listingcontroller import RandomrisingController
     from listingcontroller import UserController
     from listingcontroller import CommentsController
     from listingcontroller import GildedController

@@ -508,8 +508,6 @@ def add_place_js_module(extra_js_modules):
 
 @controller_hooks.on('home.add_sidebox')
 def add_home_sidebox():
-    if not feature.is_enabled('place_on_homepage'):
-        return None
 
     return SideBox(
         title="PLACE",

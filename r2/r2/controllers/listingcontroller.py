@@ -708,28 +708,6 @@ class AdsController(SubredditListingController):
             self.abort404()
         return SubredditListingController.GET_listing(self, *a, **kw)
 
-
-class RandomrisingController(ListingWithPromos):
-    where = 'randomrising'
-    title_text = _('you\'re really bored now, eh?')
-    next_suggestions_cls = ListingSuggestions
-
-    def query(self):
-        links = get_rising(c.site)
-
-        if not links:
-            # just pull from the new page if the rising page isn't
-            # populated for some reason
-            links = c.site.get_links('new', 'all')
-            if isinstance(links, Query):
-                links._limit = 200
-                links = [x._fullname for x in links]
-
-        links = list(links)
-        random.shuffle(links)
-
-        return links
-
 class ByIDController(ListingController):
     title_text = _('API')
     skip = False
