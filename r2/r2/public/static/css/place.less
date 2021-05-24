@@ -1,0 +1,401 @@
+.place {
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.place-embed {
+    margin: 0;
+}
+
+.place-container {
+    // TODO webkit
+    align-items: center;
+    background-color: #ddd;
+    display: flex;
+    height: 500px;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    width: auto;
+    // TODO - remove
+    // outline: solid yellow;
+}
+
+.place-viewer {
+    transform-origin: center;
+    // TODO - remove
+    // outline: dotted red;
+}
+
+.place-camera {
+    cursor: pointer;
+    transform-origin: center;
+}
+
+.place-canvas {
+    -ms-interpolation-mode: bicubic;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges; /* so crisp */
+    image-rendering: pixelated;
+    background-color: white;
+    pointer-events: none;
+    transform: translate(-.5px, -.5px);
+    display: block;
+}
+
+.place-display-canvas {
+    position: absolute;
+    pointer-events: none;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.place-camera:active {
+    cursor: -webkit-grab;
+}
+
+// This will be the thing for when you're holding a tile.
+// But that isn't implemented yet.  So it's just a comment.
+// cursor: -webkit-grabbing;
+
+.place-bottom-toolbar {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.place-palette {
+    background: #111111;
+    box-sizing: border-box;
+    cursor: pointer;
+    left: 0;
+    padding: 5px;
+    text-align: center;
+    width: 100%;
+}
+
+.place-palette > * {
+    box-sizing: border-box;
+    display: inline-block;
+    height: 30px;
+    vertical-align: top;
+    width: 30px;
+}
+
+.place-swatch {
+    &.place-selected {
+        transform: scale(1.1, 1.1);
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, .4);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+}
+
+.place-molly-guard {
+    background-color: rgba(0, 0, 0, .6);
+    background-image: data-uri('../place_icon_unlocked.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 24px 41px;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    transition: all .3s;
+    width: 100%;
+
+    &.place-locked {
+        background-image: data-uri('../place_icon_locked.png');
+        opacity: 1;
+    }
+}
+
+
+.place-hand {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.place-hand-swatch {
+    display: block;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+}
+
+.place-hand-cursor {
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    box-sizing: border-box;
+    display: none;
+    height: 40px;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 40px;
+}
+
+.place-inspector {
+    background: white;
+    border: 1px solid #eeeeee;
+    bottom: 100%;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+    display: none;
+    font-size: 14px;
+    left: 50%;
+    padding: 20px;
+    position: absolute;
+    transform: translate(-50%, -20px);
+
+    input {
+        display: block;
+        width: 100%;
+    }
+}
+
+.place-uninitialized {
+    display: none;
+}
+
+.place-camera-button,
+.place-mute-button,
+.place-zoom-button,
+.place-notification-button,
+.place-zoom-pulse {
+    border-radius: 50%;
+    border: none;
+    height: 40px;
+    outline: none;
+    position: absolute;
+    top: 10px;
+    width: 40px;
+}
+
+.place-camera-button,
+.place-mute-button,
+.place-notification-button,
+.place-zoom-button {
+    background-color: rgba(0, 0, 0, .6);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+}
+
+.place-notification-button {
+    display: none;
+    top: 60px;
+    left: 10px;
+    background-image: data-uri('../place_notification_off.png');
+    &.place-notification-on {
+        background-image: data-uri('../place_notification_on.png');
+    }
+}
+
+.place-camera-button {
+    display: none;
+    top: 60px;
+    right: 10px;
+    background-image: data-uri('../place_camera_track_on.png');
+
+    &.place-following {
+        background-image: data-uri('../place_camera_track_off.png');
+    }
+}
+
+.place-zoom-button {
+    background-image: data-uri('../place_icon_zoom_out.png');
+    right: 10px;
+
+    &.place-zoomed-out {
+        background-image: data-uri('../place_icon_zoom_in.png');
+    }
+}
+
+
+.place-zoom-pulse {
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  border: 2px rgba(0, 0, 0, 0.6) solid;
+  height: 100%;
+  width: 100%;
+
+  opacity: 0;
+  .place-zoom-pulsing & {
+    -webkit-animation: pulse 3s ease-out;
+    -moz-animation: pulse 3s ease-out;
+    animation: pulse 3s ease-out;
+    -webkit-animation-iteration-count: 10;
+    -moz-animation-iteration-count: 10;
+    animation-iteration-count: 10;
+  }
+}
+
+
+@-moz-keyframes pulse {
+ 0% {
+    -moz-transform: scale(0.8);
+    opacity: 0.0;
+ }
+ 25% {
+    -moz-transform: scale(0.8);
+    opacity: 0.1;
+ }
+ 50% {
+    -moz-transform: scale(1.05);
+    opacity: 0.3;
+ }
+ 75% {
+    -moz-transform: scale(1.2);
+    opacity: 0.5;
+ }
+ 100% {
+    -moz-transform: scale(1.3);
+    opacity: 0.0;
+ }
+}
+
+@-webkit-keyframes "pulse" {
+ 0% {
+    -webkit-transform: scale(0.8);
+    opacity: 0.0;
+ }
+ 25% {
+    -webkit-transform: scale(0.8);
+    opacity: 0.1;
+ }
+ 50% {
+    -webkit-transform: scale(1.05);
+    opacity: 0.3;
+ }
+ 75% {
+    -webkit-transform: scale(1.2);
+    opacity: 0.5;
+ }
+ 100% {
+    -webkit-transform: scale(1.3);
+    opacity: 0.0;
+ }
+}
+
+
+@-webkit-keyframes "pulse" {
+ 0% {
+    -webkit-transform: scale(0.8);
+    opacity: 0.0;
+ }
+ 25% {
+    -webkit-transform: scale(0.8);
+    opacity: 0.1;
+ }
+ 50% {
+    -webkit-transform: scale(1.05);
+    opacity: 0.3;
+ }
+ 75% {
+    -webkit-transform: scale(1.2);
+    opacity: 0.5;
+ }
+ 100% {
+    -webkit-transform: scale(1.3);
+    opacity: 0.0;
+ }
+}
+
+
+@keyframes "pulse" {
+ 0% {
+    transform: scale(0.8);
+    opacity: 0.0;
+ }
+ 25% {
+    transform: scale(0.8);
+    opacity: 0.1;
+ }
+ 50% {
+    transform: scale(1.05);
+    opacity: 0.3;
+ }
+ 75% {
+    transform: scale(1.2);
+    opacity: 0.5;
+ }
+ 100% {
+    transform: scale(1.3);
+    opacity: 0.0;
+ }
+}
+
+
+.place-mute-button {
+    background-image: data-uri('../place_icon_audio_off.png');
+    left: 10px;
+
+    &.place-muted {
+        background-image: data-uri('../place_icon_audio_on.png');
+    }
+
+    &.place-uninitialized {
+        display: none;
+    }
+}
+
+.place-timer {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    color: white;
+    display: none;
+    font-size: 20px;
+    left: 50%;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, 10px);
+}
+
+.place-activity-count,
+.place-coordinates {
+    background: rgba(255, 255, 255, .6);
+    border-radius: 4px;
+    bottom: 100%;
+    color: #666666;
+    font-size: 10px;
+    height: auto;
+    line-height: 12px;
+    padding: 5px;
+    position: absolute;
+    vertical-align: middle;
+    width: auto;
+}
+
+.place-coordinates {
+    left: 0;
+    transform: translate(10px, -10px);
+}
+
+.place-activity-count {
+    font-weight: bold;
+    right: 0;
+    transform: translate(-10px, -10px);
+
+    &:after {
+        background-image: data-uri('../place_icon_activity.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 12px 12px;
+        content: '';
+        display: inline-block;
+        height: 12px;
+        margin-left: 5px;
+        vertical-align: middle;
+        width: 12px;
+    }
+}

@@ -31,20 +31,21 @@ from r2.lib.validator import (
     VModhash,
     VUser,
 )
-from r2.models import Subreddit, DefaultSR
-from r2.controllers.oauth2 import (
-    allow_oauth2_access,
-)
-
-from . import events
-from .models import (
+from r2.models import (
     CANVAS_ID,
     CANVAS_WIDTH,
     CANVAS_HEIGHT,
     Pixel,
     RedisCanvas,
+    Subreddit,
+    DefaultSR
 )
-from .pages import (
+from r2.controllers.oauth2 import (
+    allow_oauth2_access,
+)
+
+from r2.lib import place_events
+from r2.lib_pages.place_pages import (
     PlaceEmbedPage,
     PlacePage,
     PlaceCanvasse,
@@ -322,7 +323,7 @@ class PlaceController(RedditController):
             }
         )
 
-        events.place_pixel(x, y, color)
+        place_events.place_pixel(x, y, color)
         cooldown = 0 if c.user_is_admin else PIXEL_COOLDOWN_SECONDS
         return {
             'wait_seconds': cooldown,

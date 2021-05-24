@@ -737,6 +737,59 @@ module["https-tester"] = Module("https-tester.js",
     "https-tester.js"
 )
 
+module["place-base"] = Module("place-base.js",
+    # core & external dependencies
+    "websocket.js",
+    "place/modules.js",
+    "place/utils.js",
+
+    # 'exit node' modules, no internal dependencies
+    "place/activity.js",
+    "place/api.js",
+    "place/audio.js",
+    "place/camera.js",
+    "place/camerabutton.js",
+    "place/canvasse.js",
+    "place/coordinates.js",
+    "place/hand.js",
+    "place/inspector.js",
+    "place/keyboard.js",
+    "place/mollyguard.js",
+    "place/mutebutton.js",
+    "place/notificationbutton.js",
+    "place/notifications.js",
+    "place/palette.js",
+    "place/zoombutton.js",
+    "place/timer.js",
+
+    # 'internal node' modules, only dependant on 'exit nodes'
+    "place/client.js",
+    "place/cursor.js",
+    "place/world.js",
+
+    # 'entrance node' modules, only dependant on 'internal' or 'exit' nodes
+    "place/camerabuttonevents.js",
+    "place/cameraevents.js",
+    "place/canvasevents.js",
+    "place/mutebuttonevents.js",
+    "place/notificationbuttonevents.js",
+    "place/paletteevents.js",
+    "place/websocketevents.js",
+    "place/zoombuttonevents.js",
+)
+# Optionally included admin-only modules
+module["place-admin"] = Module("place-admin.js",
+    "place/admin/api.js",
+
+    "place/admin/slider.js",
+    "place/admin/selector.js",
+)
+
+module["place-init"] = Module("place-init.js",
+    # entry point
+    "place/init.js",
+)
+
 def src(*names, **kwargs):
     sources = []
 

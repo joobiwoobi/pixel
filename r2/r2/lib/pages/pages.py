@@ -250,7 +250,7 @@ class Reddit(Templated):
     content_id         = None
     css_class          = None
     extra_page_classes = None
-    extra_stylesheets  = []
+    extra_stylesheets  = ['place_global.less']
 
     def __init__(self, space_compress=None, nav_menus=None, loginbox=True,
                  infotext='', infotext_class=None, infotext_show_icon=False,
