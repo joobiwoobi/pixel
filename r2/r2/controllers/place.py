@@ -31,21 +31,20 @@ from r2.lib.validator import (
     VModhash,
     VUser,
 )
-from r2.models import (
+from r2.models.place import (
     CANVAS_ID,
     CANVAS_WIDTH,
     CANVAS_HEIGHT,
     Pixel,
     RedisCanvas,
-    Subreddit,
-    DefaultSR
 )
+from r2.models import Subreddit, DefaultSR
 from r2.controllers.oauth2 import (
     allow_oauth2_access,
 )
 
 from r2.lib import place_events
-from r2.lib_pages.place_pages import (
+from r2.lib.pages.place_pages import (
     PlaceEmbedPage,
     PlacePage,
     PlaceCanvasse,
@@ -160,7 +159,6 @@ def get_activity_count():
     return count
 
 
-@add_controller
 class PlaceController(RedditController):
     def pre(self):
         RedditController.pre(self)

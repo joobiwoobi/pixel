@@ -494,4 +494,17 @@ def make_map(config):
 
     mc("/*url", controller='front', action='catchall')
 
+    # Place related
+    mc("/place", controller="place", action="canvasse",
+       conditions={"function": not_in_sr}, is_embed=False)
+    mc("/place/embed", controller="place", action="canvasse",
+       conditions={"function": not_in_sr}, is_embed=True)
+    mc("/api/place/time", controller="place", action="time_to_wait",
+       conditions={"function": not_in_sr})
+    mc("/api/place/board-bitmap", controller="loggedoutplace",
+       action="board_bitmap", conditions={"function": not_in_sr})
+
+    mc("/api/place/:action", controller="place",
+       conditions={"function": not_in_sr})
+
     return map
