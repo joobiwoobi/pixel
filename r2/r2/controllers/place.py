@@ -38,7 +38,7 @@ from r2.models.place import (
     Pixel,
     RedisCanvas,
 )
-from r2.models import Subreddit, DefaultSR
+from r2.models import Subreddit
 from r2.controllers.oauth2 import (
     allow_oauth2_access,
 )
@@ -58,7 +58,7 @@ ACCOUNT_CREATION_CUTOFF = datetime(2017, 3, 31, 0, 0, tzinfo=g.tz)
 PIXEL_COOLDOWN_SECONDS = 300
 PIXEL_COOLDOWN = timedelta(seconds=PIXEL_COOLDOWN_SECONDS)
 ADMIN_RECT_DRAW_MAX_SIZE = 20
-PLACE_SUBREDDIT = DefaultSR()
+PLACE_SUBREDDIT = Subreddit._by_name("frontpage", stale=True)
 
 
 @add_controller
@@ -181,6 +181,7 @@ class PlaceController(RedditController):
     def GET_canvasse(self, is_embed, is_webview, is_palette_hidden):
         # oauth will try to force the response into json
         # undo that here by hacking extension, content_type, and render_style
+        raise ActivityError('getting to get canvasse')
         try:
             del(request.environ['extension'])
         except:
@@ -244,9 +245,6 @@ class PlaceController(RedditController):
     )
     @allow_oauth2_access
     def POST_draw(self, responder, x, y, color):
-
-        # End the game
-        self.abort403()
 
         if c.user._date >= ACCOUNT_CREATION_CUTOFF:
             self.abort403()

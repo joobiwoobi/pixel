@@ -128,7 +128,7 @@ class BaseSite(object):
     def __getattr__(self, name):
         if name in self._defaults:
             return self._defaults[name]
-        raise AttributeError
+        raise AttributeError('looking for ' + name + '.')
 
     @property
     def path(self):
@@ -1810,7 +1810,7 @@ class DefaultSR(_DefaultSR):
     @property
     def _base(self):
         try:
-            return Subreddit._by_name(g.default_sr, stale=True)
+            return Subreddit._by_name("frontpage", stale=True)
         except NotFound:
             return None
 
