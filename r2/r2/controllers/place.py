@@ -61,7 +61,6 @@ ADMIN_RECT_DRAW_MAX_SIZE = 20
 PLACE_SUBREDDIT = Subreddit._by_name("frontpage", stale=True)
 
 
-@add_controller
 class LoggedOutPlaceController(BaseController):
     def pre(self):
         BaseController.pre(self)

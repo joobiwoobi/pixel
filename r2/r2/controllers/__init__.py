@@ -99,5 +99,6 @@ def load_controllers():
     from ipn import RedditGiftsController
     from mailgun import MailgunWebhookController
     from place import PlaceController
+    from place import LoggedOutPlaceController
 
     _reddit_controllers.update((name.lower(), obj) for name, obj in locals().iteritems())

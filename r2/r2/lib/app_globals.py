@@ -36,10 +36,13 @@ import socket
 import subprocess
 import sys
 
+import redis
+
 from sqlalchemy import engine, event
 from baseplate import Baseplate, config as baseplate_config
 from baseplate.thrift_pool import ThriftConnectionPool
 from baseplate.context.thrift import ThriftContextFactory
+from baseplate.context.redis import RedisContextFactory
 from baseplate.server import einhorn
 
 import pkg_resources
@@ -782,6 +785,15 @@ class Globals(object):
                 ThriftContextFactory(activity_pool, ActivityService.Client))
 
         self.startup_timer.intermediate("thrift")
+
+        ################# REDIS
+        redis_pool = redis.BlockingConnectionPool.from_url(
+            'redis://localhost:6380/',
+            max_connections=100,
+            timeout=0.1,
+        )
+        self.baseplate.add_to_context("place_redis", RedisContextFactory(redis_pool))
+
 
         ################# CASSANDRA
         keyspace = "reddit"

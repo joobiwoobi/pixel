@@ -108,8 +108,8 @@
     });
 
     // Allow passing in starting camera position in the url hash
-    var locationHash = window.location.hash.replace(/^#/, '');
-    var hashParams = r.utils.parseQueryString(locationHash);
+//    var locationHash = window.location.hash.replace(/^#/, '');
+//    var hashParams = r.utils.parseQueryString(locationHash);
 
 
     Canvasse.init(canvas, canvasWidth, canvasHeight);
@@ -149,8 +149,10 @@
     var randomX = randomBuffer + parseInt(Math.random() * (canvasWidth - (randomBuffer * 2)), 10);
     var randomY = randomBuffer + parseInt(Math.random() * (canvasHeight - (randomBuffer * 2)), 10);
 
-    var startX = Math.max(0, Math.min(canvasWidth, hashParams.x || randomX));
-    var startY = Math.max(0, Math.min(canvasHeight, hashParams.y || randomY));
+//    var startX = Math.max(0, Math.min(canvasWidth, hashParams.x || randomX));
+//    var startY = Math.max(0, Math.min(canvasHeight, hashParams.y || randomY));
+    var startX = halfWidth;
+    var startY = halfHeight;
 
     Coordinates.init(coordinates, startX, startY);
 
@@ -340,17 +342,17 @@
     });
 
     // Move the camera if the hash params changedTouches
-    bindEvents(window, {
-      'hashchange': function(e) {
-        var locationHash = window.location.hash.replace(/^#/, '');
-        var hashParams = r.utils.parseQueryString(locationHash);
-
-        if (hashParams.x && hashParams.y) {
-          Client.interact();
-          Client.setCameraLocation(hashParams.x, hashParams.y);
-        }
-      },
-    });
+//    bindEvents(window, {
+//      'hashchange': function(e) {
+//        var locationHash = window.location.hash.replace(/^#/, '');
+//        var hashParams = r.utils.parseQueryString(locationHash);
+//
+//        if (hashParams.x && hashParams.y) {
+//          Client.interact();
+//          Client.setCameraLocation(hashParams.x, hashParams.y);
+//        }
+//      },
+//    });
 
     startTicking(function() {
       Keyboard.tick();

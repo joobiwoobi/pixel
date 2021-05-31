@@ -6,6 +6,16 @@ r.utils = {
      * @param  {Object} newParams
      * @return {String}
      */
+    parseQueryString: function(hashValue) {
+        return hashValue;
+    },
+
+    /**
+     * update the given url's query params
+     * @param  {String} url
+     * @param  {Object} newParams
+     * @return {String}
+     */
     replaceUrlParams: function(url, newParams) {
       var a = document.createElement('a');
       var urlObj = $.url(url);

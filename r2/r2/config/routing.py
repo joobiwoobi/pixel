@@ -53,8 +53,18 @@ def make_map(config):
     mc('/user/me', controller='user', action='rel_user_redirect')
     mc('/user/me/*rest', controller='user', action='rel_user_redirect')
 
-    for plugin in reversed(config['r2.plugins']):
-        plugin.add_routes(mc)
+    # Place related
+    mc("/place", controller="place", action="canvasse",
+       conditions={"function": not_in_sr}, is_embed=False)
+    mc("/place/embed", controller="place", action="canvasse",
+       conditions={"function": not_in_sr}, is_embed=True)
+    mc("/api/place/time", controller="place", action="time_to_wait",
+       conditions={"function": not_in_sr})
+    mc("/api/place/board-bitmap", controller="loggedoutplace",
+       action="board_bitmap", conditions={"function": not_in_sr})
+
+    mc("/api/place/:action", controller="place",
+       conditions={"function": not_in_sr})
 
     mc('/admin/', controller='awards')
 
@@ -68,18 +78,6 @@ def make_map(config):
     mc('/adminon', controller='forms', action='adminon')
     mc('/adminoff', controller='forms', action='adminoff')
     mc('/submit', controller='front', action='submit')
-
-    # redirect old urls to the new
-    ABOUT_BASE = "https://about.reddit.com/"
-    mc('/about', controller='redirect', action='redirect', dest=ABOUT_BASE, 
-       conditions={'function':not_in_sr})
-    mc('/about/values', controller='redirect', action='redirect', dest=ABOUT_BASE)
-    mc('/about/team', controller='redirect', action='redirect',
-       dest=ABOUT_BASE)
-    mc('/about/alien', controller='redirect', action='redirect',
-       dest=ABOUT_BASE + "press")
-    mc('/jobs', controller='redirect', action='redirect',
-       dest=ABOUT_BASE + "careers")
 
     mc('/over18', controller='post', action='over18')
     mc('/quarantine', controller='post', action='quarantine')
@@ -493,18 +491,5 @@ def make_map(config):
        requirements=dict(urloid=r'(\w+\.\w{2,}|https?).*'))
 
     mc("/*url", controller='front', action='catchall')
-
-    # Place related
-    mc("/place", controller="place", action="canvasse",
-       conditions={"function": not_in_sr}, is_embed=False)
-    mc("/place/embed", controller="place", action="canvasse",
-       conditions={"function": not_in_sr}, is_embed=True)
-    mc("/api/place/time", controller="place", action="time_to_wait",
-       conditions={"function": not_in_sr})
-    mc("/api/place/board-bitmap", controller="loggedoutplace",
-       action="board_bitmap", conditions={"function": not_in_sr})
-
-    mc("/api/place/:action", controller="place",
-       conditions={"function": not_in_sr})
 
     return map
