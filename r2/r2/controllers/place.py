@@ -180,7 +180,6 @@ class PlaceController(RedditController):
     def GET_canvasse(self, is_embed, is_webview, is_palette_hidden):
         # oauth will try to force the response into json
         # undo that here by hacking extension, content_type, and render_style
-        raise ActivityError('getting to get canvasse')
         try:
             del(request.environ['extension'])
         except:
@@ -206,23 +205,24 @@ class PlaceController(RedditController):
             js_config["place_wait_seconds"] = get_wait_seconds(c.user)
 
         # this is a sad duplication of the same from reddit_base :(
-        if c.user_is_loggedin:
-            PLACE_SUBREDDIT.record_visitor_activity("logged_in", c.user._fullname)
-        elif c.loid.serializable:
-            PLACE_SUBREDDIT.record_visitor_activity("logged_out", c.loid.loid)
+        # if c.user_is_loggedin:
+        #     PLACE_SUBREDDIT.record_visitor_activity("logged_in", c.user._fullname)
+        # elif c.loid.serializable:
+        #     PLACE_SUBREDDIT.record_visitor_activity("logged_out", c.loid.loid)
+        #
+        # try:
+        #     js_config["place_active_visitors"] = get_activity_count()
+        # except ActivityError:
+        #     pass
 
-        try:
-            js_config["place_active_visitors"] = get_activity_count()
-        except ActivityError:
-            pass
+        # if is_embed:
+        #     # ensure we're off the cookie domain before allowing embedding
+        #     if request.host != g.media_domain:
+        #         abort(404)
+        #     c.allow_framing = True
 
-        if is_embed:
-            # ensure we're off the cookie domain before allowing embedding
-            if request.host != g.media_domain:
-                abort(404)
-            c.allow_framing = True
-
-        if is_embed or is_webview:
+        # if is_embed or is_webview:
+        if False:
             return PlaceEmbedPage(
                 title="place",
                 content=content,
